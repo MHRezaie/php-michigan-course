@@ -34,13 +34,13 @@ if ( isset($_POST['email']) && isset($_POST['pass'])  ) {
         $row=$_POST['pass']=="php123";
     if ( $row === FALSE ) {
         error_log("Login fail ".$_POST['email']." ".hash('md5','XyZzy12*_'.$_POST['pass']));
-        $_SESSION['error'] = "Incorrect password";
+        $_SESSION['error'] = "Incorrect pass";
         header("Location: login.php");
         return;
     } else { 
         error_log("Login success ".$_POST['email']);
         $_SESSION['name'] = $_POST['email'];
-        header("Location: view.php");
+        header("Location: index.php");
         return;
     }
 }

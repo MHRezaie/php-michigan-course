@@ -3,7 +3,7 @@ session_start();
 require_once "pdo.php";
 
 if ( ! isset($_SESSION['name']) ) {
-    die("ACCESS DENIED");
+    die("Not logged in");
 }
 
 // If the user requested logout go back to index.php
@@ -14,35 +14,30 @@ if(isset($_POST['cancel'])){
 
 if ( $_SERVER["REQUEST_METHOD"] == "POST"
     ){
-        if(strlen($_POST['make'])<1 ||
-        strlen($_POST['model'])<1 ||
-        strlen($_POST['year'])<1 ||
-        strlen($_POST['mileage'])<1){
+        if(strlen($_POST['first_name'])<1 ||
+            strlen($_POST['last_name'])<1 ||
+            strlen($_POST['email'])<1 ||
+            strlen($_POST['headline'])<1 ||
+            strlen($_POST['summary'])<1){
             $_SESSION['error']="All fields are required";
             header("Location: add.php");
             return;
         }
-        else if(is_numeric($_POST['year']) && is_numeric($_POST['mileage'])){
-            $stmt = $pdo->prepare(
-                'INSERT INTO autos(make,model, year, mileage) VALUES ( :mk,:md, :yr, :mi)'
-            );
-            $stmt->execute(array(
-                ':mk' => $_POST['make'],
-                ':md' => $_POST['model'],
-                ':yr' => $_POST['year'],
-                ':mi' => $_POST['mileage'])
-            );
-            $_SESSION['success'] = "Record added";
-            header("Location: index.php");
-            return;
-            
-            }
         else{
-            if(!is_numeric($_POST['year']))
-                $_SESSION['error']="Year must be an integer";
-            if(!is_numeric($_POST['mileage']))
-                $_SESSION['error']="Mileage must be an integer";    
-            header("Location: add.php");
+            $stmt = $pdo->prepare('INSERT INTO Profile
+            (user_id, first_name, last_name, email, headline, summary)
+            VALUES ( :uid, :fn, :ln, :em, :he, :su)');
+          
+          $stmt->execute(array(
+            ':uid' => $_SESSION['user_id'],
+            ':fn' => $_POST['first_name'],
+            ':ln' => $_POST['last_name'],
+            ':em' => $_POST['email'],
+            ':he' => $_POST['headline'],
+            ':su' => $_POST['summary'])
+          );
+          $_SESSION['success'] = "Profile added";
+            header("Location: index.php");
             return;
         }
      }
@@ -50,7 +45,7 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST"
 ?>
 
 
-<!DOCTYPE html>
+<DOCTYPE html>
 <html>
 <head>
 <title>M.H Rezaie</title>
@@ -59,15 +54,17 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST"
 <body>
 <div class="container">
 <form method="POST">
-    <p>Make:
-    <input type="text" name="make" size="60"></p>
-    <p>Model:
-    <input type="text" name="model"></p>
-    <p>Year:
-    <input type="text" name="year"></p>
-    <p>Mileage:
-    <input  type="text" name="mileage"></p>
-    <input type="submit" value="add">
+    <p>First Name:
+    <input type="text" name="first_name"></p>
+    <p>Last Name:
+    <input type="text" name="last_name"></p>
+    <p>Email:
+    <input type="text" name="email"></p>
+    <p>headline:
+    <input  type="text" name="headline"></p>
+    <p>summary:
+    <textarea name="summary"></textarea></p>
+    <input type="submit" value="Add">
     <input type="submit" name="cancel" value="cancel">
 </form>
 <?php

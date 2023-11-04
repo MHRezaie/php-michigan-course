@@ -11,14 +11,12 @@
 </head>
 <body>
 <div class="container">
-<h1>M.H Rezaie's Resume Registry</h1>
+<h1>Welcome to Automobiles Database</h1>
 <?php
-    $isLogged=false;
     if(!isset($_SESSION['name'])){
         echo "<p><a href='login.php'>Please log in</a></p>";
     }
     else{
-        $isLogged=true;
         if(isset($_SESSION['error'])){
             echo "<p style='color:red'>{$_SESSION["error"]}</p>";
             unset($_SESSION['error']);
@@ -27,41 +25,43 @@
             echo "<p style='color:green'>{$_SESSION["success"]}</p>";
             unset($_SESSION['success']);
         }
-        echo "<p><a href='logout.php'>Logout</a></p>";
-}
-$stmt = $pdo->query("SELECT * FROM Profile");
+        $stmt = $pdo->query("SELECT * FROM autos");
     if($stmt->rowCount()==0){
         echo "<b>No rows found !</b>";
     }
     else{
     echo('<table border="1" >'."\n");
-    $tbl="<tr>
-    <th style='padding:5px;'>Name</th>
-    <th style='padding:5px;'>Headline</th>";
-    
-    $tbl.=$isLogged?"<th style='padding:5px;'>Action</th></tr>" : "</tr>";
+    echo "<tr>
+        <th style='padding:5px;'>Make</th>
+        <th style='padding:5px;'>Model</th>
+        <th style='padding:5px;'>Mileage</th>
+        <th style='padding:5px;'>Year</th>
+        <th style='padding:5px;'>Action</th>
+    </tr>
+    ";
 
     while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
         echo "<tr><td style='padding:5px;'>";
-        echo("<a href='/view.php?profile_id=".$row['id']."'>".
-            htmlentities($row['first_name'])." ".htmlentities($row['last_name'])."</a>"
-        );
+        echo(htmlentities($row['make']));
         echo("</td><td style='padding:5px;'>");
-        echo(htmlentities($row['headline']));
-        if($isLogged){
-            echo("</td><td style='padding:5px;'>");
-            echo('<a href="/edit.php?profile_id='.$row['id'].'">Edit</a> / ');
-            echo('<a href="/delete.php?profile_id='.$row['id'].'">Delete</a>');
-        }
+        echo(htmlentities($row['model']??"empty"));
+        echo("</td><td style='padding:5px;'>");
+        echo(htmlentities($row['mileage']));
+        echo("</td><td style='padding:5px;'>");
+        echo(htmlentities($row['year']));
+        echo("</td><td style='padding:5px;'>");
+        echo('<a href="edit.php?auto_id='.$row['auto_id'].'">Edit</a> / ');
+        echo('<a href="delete.php?auto_id='.$row['auto_id'].'">Delete</a>');
         echo("</td></tr>\n");
     }
     echo "</table>";
     }
-if($isLogged){
     echo'
-    <br/><br/>
-    <a href="add.php">Add New Entry</a>
-    <br/>';
+        <br/><br/>
+        <a href="add.php">Add New Entry</a>
+        <br/>
+        <a href="logout.php" style="color:red">Logout</a>';
+    
 }
 ?>
 </div>

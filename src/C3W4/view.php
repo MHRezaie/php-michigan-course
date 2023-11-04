@@ -41,7 +41,7 @@ if ( isset($_SESSION['success']) ) {
 ?>
 
 <h2 class="__web-inspector-hide-shortcut__ mb-5">Automobiles</h2>
-<a href="/add.php">Add new</a>
+<a href="/add.php">Add New</a>
 <span>|</span>
 <a href="/logout.php" >Logout</a>
 <?php
