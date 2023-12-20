@@ -31,7 +31,7 @@ if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['e
     && isset($_POST['headline']) && isset($_POST['summary'])) {
     if (strlen($_POST['first_name']) < 1 || strlen($_POST['last_name']) < 1 || strlen($_POST['email']) < 1 ||
         strlen($_POST['headline']) < 1 || strlen($_POST['summary']) < 1) {
-        $_SESSION['error'] = 'All values are required';
+        $_SESSION['error'] = 'All fields are required';
         header("Location: add.php");
         return;
     } elseif (strpos($_POST['email'], '@') === false) {
@@ -116,7 +116,7 @@ if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['e
             Position: <input type="submit" id="addPos" value="+">
         <div id="position_fields">
             <input type="submit" value="Add">
-            <input type="submit" name="cancel" value="Cancel">
+            <a href="/index.php">Cancel</a>
         </p>
     </form>
     <script>
