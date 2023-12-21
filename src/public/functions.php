@@ -19,7 +19,7 @@ function validateProfile($firstName, $lastName, $email, $headline, $summary)
 {
     if(strlen($firstName) < 1 || strlen($lastName) < 1 || strlen($email) < 1 || strlen($headline) < 1 || strlen($summary) < 1)
     {
-        $_SESSION["error"] = "All field are required";
+        $_SESSION["error"] = "All fields are required";
         return false;
     }
     if(strpos($email, "@") === false)
