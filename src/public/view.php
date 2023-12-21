@@ -59,7 +59,7 @@ $educations = loadEduOrPos($pdo, $_GET["profile_id"], "Education");
 
 	<head>
 		<meta charset = "utf-8">
-		<title>Jared Best | View Page</title>
+		<title>M.H Rezaie</title>
 		<?php require_once "head.php" ?>
 	</head>
 
